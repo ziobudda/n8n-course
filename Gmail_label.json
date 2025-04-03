@@ -1,0 +1,160 @@
+{
+  "name": "Gmail label",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b42ce137-4218-45ed-a6b0-b3a606a3239a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "filters": {
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "03e6ead7-f2e1-4924-8e19-7cd6a7dfff74",
+      "name": "Get Emails",
+      "webhookId": "de1146b1-e657-4379-b9fd-11ea714069d4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FJWeCh36ZDRq4hC4",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_5810318470848975461"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "e4cea57d-7cb9-42e9-9dc5-701cc39ef2e2",
+      "name": "Add Label",
+      "webhookId": "9a58fc06-6615-4589-8f13-6fab63e48252",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FJWeCh36ZDRq4hC4",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6b66bfb8-f496-4712-8078-b5610af04a5e",
+              "leftValue": "={{ $json.snippet }}",
+              "rightValue": "n8n.cloud",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "c41e6d97-2813-4826-971d-8051d4cd2439",
+      "name": "Check label"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Emails": {
+      "main": [
+        [
+          {
+            "node": "Check label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check label": {
+      "main": [
+        [
+          {
+            "node": "Add Label",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "22eff686-6e4d-49b5-a05f-6032e9ce743d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90b9834342bb6d93860e440af876568b6ac1b8ab7a8d60f71b0d579993eb63ee"
+  },
+  "id": "e6uD2z28fJQXPowR",
+  "tags": [
+    {
+      "createdAt": "2025-04-02T07:05:47.656Z",
+      "updatedAt": "2025-04-02T07:05:47.656Z",
+      "id": "9dWr2lFkHtDY8u6a",
+      "name": "label"
+    },
+    {
+      "createdAt": "2025-04-02T07:05:43.993Z",
+      "updatedAt": "2025-04-02T07:05:43.993Z",
+      "id": "j7lGNK5RguKfUwug",
+      "name": "gmail"
+    }
+  ]
+}
